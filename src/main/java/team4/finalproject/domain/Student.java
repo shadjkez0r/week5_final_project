@@ -2,20 +2,15 @@ package team4.finalproject.domain;
 
 import java.util.Objects;
 
-public class Student implements Comparable<Student> {
+public class Student {
     private final int groupNumber;
     private final double averageScore;
     private final int recordBookNumber;
 
-    public Student(int  groupNumber, double averageScore, int recordBookNumber) {
-        this.groupNumber = groupNumber;
-        this.averageScore = averageScore;
-        this.recordBookNumber = recordBookNumber;
-    }
-
-    @Override
-    public int compareTo(Student other) {
-        return Integer.compare(this.recordBookNumber, other.recordBookNumber);
+    private Student(Builder builder) {
+        this.groupNumber = builder.groupNumber;
+        this.averageScore = builder.averageScore;
+        this.recordBookNumber = builder.recordBookNumber;
     }
 
     public int getGroupNumber() {
@@ -31,6 +26,21 @@ public class Student implements Comparable<Student> {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Student student = (Student) o;
+        return groupNumber == student.groupNumber &&
+                Double.compare(student.averageScore, averageScore) == 0 &&
+                recordBookNumber == student.recordBookNumber;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(groupNumber, averageScore, recordBookNumber);
+    }
+
+    @Override
     public String toString() {
         return "Student{" +
                 "groupNumber=" + groupNumber +
@@ -39,19 +49,46 @@ public class Student implements Comparable<Student> {
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Student student = (Student) o;
-        return recordBookNumber == student.recordBookNumber;
+    public static class Builder {
+        private int groupNumber;
+        private double averageScore;
+        private int recordBookNumber;
+
+        public Builder groupNumber(int groupNumber) {
+            this.groupNumber = groupNumber;
+            return this;
+        }
+
+        public Builder averageScore(double averageScore) {
+            this.averageScore = averageScore;
+            return this;
+        }
+
+        public Builder recordBookNumber(int recordBookNumber) {
+            this.recordBookNumber = recordBookNumber;
+            return this;
+        }
+
+        /**
+         * Создаёт объект Student после валидации данных.
+         * @return новый экземпляр Student
+         * @throws IllegalArgumentException если данные не проходят валидацию
+         */
+        public Student build() {
+            validate();
+            return new Student(this);
+        }
+
+        private void validate() {
+            if (groupNumber <= 0) {
+                throw new IllegalArgumentException("Group number must be positive");
+            }
+            if (averageScore < 2.0 || averageScore > 5.0) {
+                throw new IllegalArgumentException("Average score must be between 2.0 and 5.0");
+            }
+            if (recordBookNumber <= 0) {
+                throw new IllegalArgumentException("Record book number must be positive");
+            }
+        }
     }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(recordBookNumber);
-    }
-
-
 }
-
