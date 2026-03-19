@@ -74,6 +74,7 @@ public class InputReader {
         }
     }
 
+
     public void close() {
         scanner.close();
     }
