@@ -10,12 +10,12 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
-public class SelectionSortStrategyTest {
-    private SelectionSortStrategy<Student> strategy;
+public class InsertionSortTest {
+    private InsertionSort<Student> strategy;
 
     @BeforeEach
     void setUp() {
-        strategy = new SelectionSortStrategy<Student>();
+        strategy = new InsertionSort<>();
     }
 
     // Проверка на пустые входные данные
@@ -24,7 +24,7 @@ public class SelectionSortStrategyTest {
         List<Student> input = new ArrayList<>();
         List<Student> expected = new ArrayList<>();
 
-        Comparator<Student> comparator = (x1, x2) -> x1.compareTo(x2);
+        Comparator<Student> comparator = Comparator.naturalOrder();
         strategy.sort(input, comparator);
 
         assertIterableEquals(input, expected);
@@ -45,7 +45,7 @@ public class SelectionSortStrategyTest {
                 new Student(2, 4.15, 9)
         );
 
-        Comparator<Student> comparator = (x1, x2) -> Double.compare(x1.getAverageScore(), x2.getAverageScore());
+        Comparator<Student> comparator = Comparator.comparingDouble(Student::getAverageScore);
 
         strategy.sort(input, comparator);
 
@@ -95,7 +95,7 @@ public class SelectionSortStrategyTest {
                 new Student(3, 3.06, 9)
         );
 
-        Comparator<Student> comparator = (x1, x2) -> Integer.compare(x1.getRecordBookNumber(), x2.getRecordBookNumber());
+        Comparator<Student> comparator = Comparator.comparingInt(Student::getRecordBookNumber);
 
         strategy.sort(input, comparator);
 
