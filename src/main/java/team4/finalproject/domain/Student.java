@@ -30,14 +30,12 @@ public class Student {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Student student = (Student) o;
-        return groupNumber == student.groupNumber &&
-                Double.compare(student.averageScore, averageScore) == 0 &&
-                recordBookNumber == student.recordBookNumber;
+        return recordBookNumber == student.recordBookNumber;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(groupNumber, averageScore, recordBookNumber);
+        return Objects.hash(recordBookNumber);
     }
 
     @Override
