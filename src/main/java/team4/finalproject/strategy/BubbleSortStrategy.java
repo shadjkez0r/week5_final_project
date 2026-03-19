@@ -11,6 +11,7 @@ public class BubbleSortStrategy<T> implements SortingStrategy<T> {
             for (int j = 0; j < list.size() - i - 1; j++) {
                 if (comparator.compare(list.get(j), list.get(j + 1)) > 0) {
                     swap(j, j + 1, list);
+                    isSwapped = true;
                 }
             }
             if (!isSwapped) {

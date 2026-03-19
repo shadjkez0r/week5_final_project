@@ -10,12 +10,12 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
-public class InsertionSortTest {
-    private InsertionSort<Student> strategy;
+public class InsertionSortStrategyTest {
+    private InsertionSortStrategy<Student> strategy;
 
     @BeforeEach
     void setUp() {
-        strategy = new InsertionSort<>();
+        strategy = new InsertionSortStrategy<>();
     }
 
     // Проверка на пустые входные данные
