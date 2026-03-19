@@ -9,7 +9,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SelectionSortStrategyTest {
     private SelectionSortStrategy<Student> strategy;

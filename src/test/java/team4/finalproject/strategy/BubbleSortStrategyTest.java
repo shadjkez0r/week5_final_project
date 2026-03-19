@@ -3,21 +3,19 @@ package team4.finalproject.strategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import team4.finalproject.domain.Student;
-import team4.finalproject.domain.StudentTest;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class BubbleSortStrategyTest {
     private BubbleSortStrategy<Student> strategy;
 
     @BeforeEach
     void setUp() {
-        strategy = new BubbleSortStrategy<Student>();
+        strategy = new BubbleSortStrategy<>();
     }
 
     // Проверка на пустые входные данные
@@ -26,7 +24,7 @@ public class BubbleSortStrategyTest {
         List<Student> input = new ArrayList<>();
         List<Student> expected = new ArrayList<>();
 
-        Comparator<Student> comparator = (x1, x2) -> x1.compareTo(x2);
+        Comparator<Student> comparator = Comparator.naturalOrder();
         strategy.sort(input, comparator);
 
         assertIterableEquals(input, expected);
@@ -47,7 +45,7 @@ public class BubbleSortStrategyTest {
                 new Student(2, 4.15, 9)
         );
 
-        Comparator<Student> comparator = (x1, x2) -> Double.compare(x1.getAverageScore(), x2.getAverageScore());
+        Comparator<Student> comparator = Comparator.comparingDouble(Student::getAverageScore);
 
         strategy.sort(input, comparator);
 
