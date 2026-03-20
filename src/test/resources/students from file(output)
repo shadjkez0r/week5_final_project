@@ -1,0 +1,5 @@
+Student{groupNumber=12, averageScore=4.3, recordBookNumber=1005}
+Student{groupNumber=2, averageScore=4.6, recordBookNumber=1020}
+Student{groupNumber=14, averageScore=3.9, recordBookNumber=1011}
+Student{groupNumber=3, averageScore=4.9, recordBookNumber=1010}
+Student{groupNumber=6, averageScore=4.0, recordBookNumber=1057}
