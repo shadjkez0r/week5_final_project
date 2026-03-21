@@ -4,8 +4,8 @@ import team4.finalproject.domain.Student;
 import team4.finalproject.io.StudentStreamGenerator;
 import team4.finalproject.service.SortingService;
 import team4.finalproject.service.StudentComparators;
-import team4.finalproject.strategy.BubbleSortStrategy;
-import team4.finalproject.strategy.SelectionSortStrategy;
+import team4.finalproject.service.strategy.BubbleSortStrategy;
+import team4.finalproject.service.strategy.InsertionSortStrategy;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -90,7 +90,7 @@ public class ConsoleController {
                 sortingService.setStrategy(new BubbleSortStrategy<>());
                 break;
             case 2:
-                sortingService.setStrategy(new SelectionSortStrategy<>());
+                sortingService.setStrategy(new InsertionSortStrategy<>());
                 break;
             default:
                 System.out.println("Invalid algorithm choice.");
@@ -184,7 +184,12 @@ public class ConsoleController {
             double averageScore = inputReader.readAverageScore();
             int recordBookNumber = inputReader.readRecordBookNumber();
 
-            Student student = new Student(groupNumber, averageScore, recordBookNumber);
+//            Student student = new Student(groupNumber, averageScore, recordBookNumber);
+            Student student = Student.builder()
+                    .recordBookNumber(recordBookNumber)
+                    .groupNumber(groupNumber)
+                    .averageScore(averageScore)
+                    .build();
             list.add(student);
         }
 

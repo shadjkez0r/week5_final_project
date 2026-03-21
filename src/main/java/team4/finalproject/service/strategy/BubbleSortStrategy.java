@@ -1,4 +1,4 @@
-package team4.finalproject.strategy;
+package team4.finalproject.service.strategy;
 
 import java.util.Comparator;
 import java.util.List;
@@ -6,6 +6,10 @@ import java.util.List;
 public class BubbleSortStrategy<T> implements SortingStrategy<T> {
     @Override
     public void sort(List<T> list, Comparator<T> comparator) {
+        if (list.size() <= 1) {
+            return;
+        }
+
         for (int i = 0; i < list.size() - 1; i++) {
             boolean isSwapped = false;
             for (int j = 0; j < list.size() - i - 1; j++) {

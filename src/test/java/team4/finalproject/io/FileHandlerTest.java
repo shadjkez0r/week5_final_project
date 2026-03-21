@@ -1,4 +1,4 @@
 package team4.finalproject.io;
 
-public class FileHandler {
+public class FileHandlerTest {
 }

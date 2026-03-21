@@ -15,9 +15,9 @@ public class FileHandler {
 
     public List<Student> readFromFile() {
         return List.of(
-                new Student(1, 4, 1001),
-                new Student(1, 3.7, 1002),
-                new Student(2, 3.5, 1003)
+                 Student.builder().groupNumber(1).averageScore(4).recordBookNumber(1).build(),
+                 Student.builder().groupNumber(1).averageScore(4).recordBookNumber(2).build(),
+                 Student.builder().groupNumber(1).averageScore(4).recordBookNumber(3).build()
         );
     }
 }
