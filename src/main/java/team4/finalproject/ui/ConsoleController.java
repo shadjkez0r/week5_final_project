@@ -1,6 +1,7 @@
 package team4.finalproject.ui;
 
 import team4.finalproject.domain.Student;
+import team4.finalproject.io.FileHandler;
 import team4.finalproject.io.StudentStreamGenerator;
 import team4.finalproject.service.SortingService;
 import team4.finalproject.service.StudentComparators;
@@ -10,19 +11,15 @@ import team4.finalproject.service.strategy.InsertionSortStrategy;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Scanner;
 
 public class ConsoleController {
     private final InputReader inputReader;
     private final MenuPrinter menuPrinter;
-
-    private final Scanner scanner;
     private final StudentStreamGenerator streamGenerator;
     private final SortingService sortingService;
     private List<Student> currentCollection;
 
     public ConsoleController() {
-        this.scanner = new Scanner(System.in);
         this.streamGenerator = new StudentStreamGenerator();
         this.sortingService = new SortingService(new BubbleSortStrategy<>());
         this.inputReader = new InputReader();
@@ -52,6 +49,9 @@ public class ConsoleController {
                     break;
                 case 3:
                     sortCollection();
+                    break;
+                case 4:
+                    writeToFile();
                     break;
                 default:
                     System.out.println("Unknown option. Please choose a number from the menu.");
@@ -158,21 +158,6 @@ public class ConsoleController {
         }
     }
 
-    private void fillFromFile() {
-        System.out.println("Enter file path (press Enter for 'students.txt'): ");
-        String path = scanner.nextLine().trim();
-        if (path.isEmpty()) {
-            path = "students.txt";
-        }
-
-//        try {
-//            FileHandler fileHandler = new FileHandler(path, "output.txt");
-//            currentCollection = fileHandler.readFromFile();
-//        } catch (IOException e) {
-//            System.out.println("Error reading file: " + e.getMessage());
-//        }
-    }
-
     private void fillManual() {
         int size = inputReader.readBoundedInt(
                 "How many students do you want to enter (1-100)? ", 1, 100);
@@ -184,7 +169,6 @@ public class ConsoleController {
             double averageScore = inputReader.readAverageScore();
             int recordBookNumber = inputReader.readRecordBookNumber();
 
-//            Student student = new Student(groupNumber, averageScore, recordBookNumber);
             Student student = Student.builder()
                     .recordBookNumber(recordBookNumber)
                     .groupNumber(groupNumber)
@@ -199,9 +183,33 @@ public class ConsoleController {
 
     private void fillRandom() {
         int size = inputReader.readBoundedInt("Enter number of students to generate (1-1000): ", 1, 1000);
-        currentCollection = streamGenerator.generateRandom(size);
+        currentCollection = new ArrayList<>(streamGenerator.generateRandom(size));
         System.out.println("Done! Generated " + currentCollection.size() + " students.");
     }
 
+    private void writeToFile() {
+        if (currentCollection.isEmpty()) {
+            System.out.println("Collection is empty. Nothing to write.");
+            return;
+        }
+
+        String path = inputReader.readString(
+                "Enter output file path (press Enter for 'src/main/resources/output.txt'): ",
+                "src/main/resources/output.txt"
+        );
+
+        FileHandler fileHandler = new FileHandler();
+        fileHandler.writeToFile(currentCollection, path);
+    }
+
+    private void fillFromFile() {
+        String path = inputReader.readString(
+                "Enter file path (press Enter for 'src/main/resources/output.txt'): ",
+                "src/main/resources/output.txt"
+        );
+
+        FileHandler fileHandler = new FileHandler();
+        currentCollection = new ArrayList<>(fileHandler.readFromFile(path));
+    }
 
 }
