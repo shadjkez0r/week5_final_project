@@ -1,4 +1,4 @@
-package team4.finalproject.strategy;
+package team4.finalproject.service.strategy;
 
 import java.util.Comparator;
 import java.util.List;

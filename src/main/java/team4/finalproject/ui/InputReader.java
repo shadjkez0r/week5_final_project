@@ -1,6 +1,5 @@
 package team4.finalproject.ui;
 
-import team4.finalproject.service.DataValidator;
 
 import java.util.Scanner;
 
@@ -44,34 +43,42 @@ public class InputReader {
         }
     }
 
-    public int readGroupNumber() {
+    public double readBoundedDouble(String prompt, double min, double max) {
         while (true) {
-            int val = readInt("  Group number (1-10): ");
-            if (DataValidator.isValidGroupNumber(val)) {
+            double val = readDouble(prompt);
+            if (val >= min && val <= max) {
                 return val;
             }
-            System.out.println("  Invalid — group number must be in range [1, 10].");
+            System.out.println("  Value must be between " + min + " and " + max + ".");
         }
+    }
+
+    public int readPositiveInt(String prompt) {
+        while (true) {
+            int val = readInt(prompt);
+            if (val > 0) {
+                return val;
+            }
+            System.out.println("  Value must be a positive integer.");
+        }
+    }
+
+    public int readGroupNumber() {
+        return readBoundedInt(" Group number (1 - 1000): ", 1, 1000);
     }
 
     public double readAverageScore() {
-        while (true) {
-            double val = readDouble("  Average score (0.0-5.0): ");
-            if (DataValidator.isValidAverageScore(val)) {
-                return val;
-            }
-            System.out.println("  Invalid — average score must be in range [0.0, 5.0].");
-        }
+        return readBoundedDouble(" Average score (0.0 - 5.0): ", 0, 5.0);
     }
 
     public int readRecordBookNumber() {
-        while (true) {
-            int val = readInt("  Record book number (positive integer): ");
-            if (DataValidator.isValidRecordBookNumber(val)) {
-                return val;
-            }
-            System.out.println("  Invalid — record book number must be a positive integer.");
-        }
+        return readPositiveInt(" Record book number (positive integer): ");
+    }
+
+    public String readString(String prompt, String defaultValue) {
+        System.out.println(prompt);
+        String line = scanner.nextLine().trim();
+        return line.isEmpty() ? defaultValue : line;
     }
 
 

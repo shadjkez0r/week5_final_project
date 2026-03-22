@@ -1,7 +1,7 @@
 package team4.finalproject.service;
 
 import team4.finalproject.domain.Student;
-import team4.finalproject.strategy.SortingStrategy;
+import team4.finalproject.service.strategy.SortingStrategy;
 
 import java.util.Comparator;
 import java.util.List;

@@ -8,24 +8,26 @@ import java.util.stream.IntStream;
 
 public class StudentStreamGenerator implements DataGenerator<Student> {
     private static final int MIN_GROUP_NUMBER = 1;
-    private static final int MAX_GROUP_NUMBER = 10;
-    private static final double MIN_AVERAGE_SCORE = 2.0;
+    private static final int MAX_GROUP_NUMBER = 1_000;
+    private static final double MIN_AVERAGE_SCORE = 0;
     private static final double MAX_AVERAGE_SCORE = 5.0;
-    private static final int MIN_RECORD_BOOK_NUMBER = 100000;
-    private static final int MAX_RECORD_BOOK_NUMBER = 999999;
+    private static final int MIN_RECORD_BOOK_NUMBER = 100_000;
+    private static final int MAX_RECORD_BOOK_NUMBER = 999_999;
 
     @Override
     public List<Student> generateRandom(int size) {
-        if (size < 0) {
-            throw new IllegalArgumentException("Size must not be negative");
+        if (size < 1) {
+            throw new IllegalArgumentException("Size must be >= 1, got: " + size);
         }
 
         return IntStream.range(0, size)
-                .mapToObj(index -> new Student(
-                        randomGroupNumber(),
-                        randomAverageScore(),
-                        randomRecordBookNumber()
-                ))
+                .mapToObj(index -> Student.builder()
+                        .averageScore(randomAverageScore())
+                        .recordBookNumber(randomRecordBookNumber())
+                        .groupNumber(randomGroupNumber())
+                        .build()
+
+                )
                 .toList();
     }
 
