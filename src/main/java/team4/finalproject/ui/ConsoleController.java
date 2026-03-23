@@ -6,11 +6,14 @@ import team4.finalproject.io.StudentStreamGenerator;
 import team4.finalproject.service.SortingService;
 import team4.finalproject.service.StudentComparators;
 import team4.finalproject.service.strategy.BubbleSortStrategy;
+import team4.finalproject.service.strategy.EvenOnlySortStrategy;
 import team4.finalproject.service.strategy.InsertionSortStrategy;
+import team4.finalproject.service.strategy.SortingStrategy;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.ToIntFunction;
 
 public class ConsoleController {
     private final InputReader inputReader;
@@ -51,6 +54,9 @@ public class ConsoleController {
                     sortCollection();
                     break;
                 case 4:
+                    specialSort();
+                    break;
+                case 5:
                     writeToFile();
                     break;
                 default:
@@ -68,10 +74,10 @@ public class ConsoleController {
         }
 
         System.out.println("--- Sort Collection ---");
-        System.out.println("Select algorithm:");
-        System.out.println("  1. Bubble Sort");
-        System.out.println("  2. Selection Sort");
-        int algoChoice = inputReader.readInt("Enter your choice: ");
+        SortingStrategy<Student> baseStrategy = chooseAlgorithm();
+        if (baseStrategy == null) {
+            return;
+        }
 
         System.out.println("Select sort field:");
         System.out.println("  1. Group Number          (ascending)");
@@ -85,17 +91,8 @@ public class ConsoleController {
             return;
         }
 
-        switch (algoChoice) {
-            case 1:
-                sortingService.setStrategy(new BubbleSortStrategy<>());
-                break;
-            case 2:
-                sortingService.setStrategy(new InsertionSortStrategy<>());
-                break;
-            default:
-                System.out.println("Invalid algorithm choice.");
-                return;
-        }
+
+        sortingService.setStrategy(baseStrategy);
 
         long start = System.currentTimeMillis();
         sortingService.sort(currentCollection, comparator);
@@ -106,17 +103,58 @@ public class ConsoleController {
 
     }
 
-    private Comparator<Student> resolveComparator(int fieldChoice) {
+    private void specialSort() {
+        if (currentCollection.isEmpty()) {
+            System.out.println("Collection is empty. Use option 1 to fill it first.");
+            return;
+        }
+        System.out.println("--- Special Sort (even values sorted, odd stay in place) ---");
+
+        SortingStrategy<Student> baseStrategy = chooseAlgorithm();
+        if (baseStrategy == null) {
+            return;
+        }
+
+        System.out.println("Select integer field for even/odd check and sort: ");
+        System.out.println("  1. Group Number          (ascending)");
+        System.out.println("  2. Record Book Number    (ascending)");
+        int fieldChoice = inputReader.readInt("Enter your choice: ");
+
+        ToIntFunction<Student> fieldForNaturalOrder;
+        Comparator<Student> comparator;
+
         switch (fieldChoice) {
             case 1:
-                return StudentComparators.BY_GROUP_NUMBER;
+                fieldForNaturalOrder = Student::getGroupNumber;
+                comparator = StudentComparators.BY_GROUP_NUMBER;
+                break;
             case 2:
-                return StudentComparators.BY_AVERAGE_SCORE_DESC;
-            case 3:
-                return StudentComparators.BY_RECORD_BOOK_NUMBER;
+                fieldForNaturalOrder = Student::getRecordBookNumber;
+                comparator = StudentComparators.BY_RECORD_BOOK_NUMBER;
+                break;
             default:
-                return null;
+                System.out.println("Invalid field choice.");
+                return;
         }
+
+        EvenOnlySortStrategy strategy = new EvenOnlySortStrategy(baseStrategy, fieldForNaturalOrder);
+        sortingService.setStrategy(strategy);
+
+        long start = System.currentTimeMillis();
+        sortingService.sort(currentCollection, comparator);
+        long elapsed = System.currentTimeMillis() - start;
+
+        System.out.println("Special sorting complete in " + elapsed + " ms.");
+        showCollection();
+    }
+
+    private Comparator<Student> resolveComparator(int fieldChoice) {
+        return switch (fieldChoice) {
+            case 1 -> StudentComparators.BY_GROUP_NUMBER;
+            case 2 -> StudentComparators.BY_AVERAGE_SCORE_DESC;
+            case 3 -> StudentComparators.BY_RECORD_BOOK_NUMBER;
+            default -> null;
+        };
     }
 
     private void showCollection() {
@@ -210,6 +248,24 @@ public class ConsoleController {
 
         FileHandler fileHandler = new FileHandler();
         currentCollection = new ArrayList<>(fileHandler.readFromFile(path));
+    }
+
+    private SortingStrategy<Student> chooseAlgorithm() {
+        System.out.println("Select algorithm:");
+        System.out.println(" 1. Bubble Sort");
+        System.out.println(" 2. Insertion Sort");
+
+        int algoChoice = inputReader.readInt("Enter your choice: ");
+
+        switch (algoChoice) {
+            case 1:
+                return new BubbleSortStrategy<>();
+            case 2:
+                return new InsertionSortStrategy<>();
+            default:
+                System.out.println("Invalid algorithm choice.");
+                return null;
+        }
     }
 
 }
