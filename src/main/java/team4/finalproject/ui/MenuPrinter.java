@@ -16,8 +16,8 @@ public class MenuPrinter {
         System.out.println("2. Show current collection");
         System.out.println("3. Sort collection");
         System.out.println("4. Special sort  [Доп.1: even values sorted, odd stay in place]");
-//        System.out.println("5. Count occurrences  [Доп.4 — multithreaded]");
-        System.out.println("5. Write collection to file  [Доп.2: append mode]");
+        System.out.println("5. Count occurrences  [Доп.4: multithreading]");
+        System.out.println("6. Write collection to file  [Доп.2: append mode]");
         System.out.println("0. Exit");
         System.out.println("---------------------------");
     }

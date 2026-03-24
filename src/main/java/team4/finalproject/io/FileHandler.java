@@ -77,7 +77,7 @@ public class FileHandler {
 
         try {
             Files.write(path, finalLines, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
-            System.out.println("Successfully wrote student data: " + (finalLines.size()-3));
+            System.out.println("Successfully wrote student data: " + (finalLines.size() - 3));
         } catch (IOException e) {
             System.out.println("Error writing file: " + e.getMessage());
         }

@@ -1,10 +1,12 @@
 package team4.finalproject.service;
 
 import team4.finalproject.domain.Student;
+
 import java.util.Comparator;
 
 public final class StudentComparators {
-    private StudentComparators() {}
+    private StudentComparators() {
+    }
 
     public static final Comparator<Student> BY_GROUP_NUMBER =
             Comparator.comparingInt(Student::getGroupNumber);
