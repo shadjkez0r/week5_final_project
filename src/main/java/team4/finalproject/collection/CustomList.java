@@ -145,7 +145,7 @@ public class CustomList<T> implements Iterable<T> {
 
         @Override
         public Spliterator<T> trySplit() {
-            int remaining =  end - current;
+            int remaining = end - current;
             if (remaining < 2) {
                 return null;
             }

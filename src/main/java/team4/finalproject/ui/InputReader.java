@@ -68,7 +68,8 @@ public class InputReader {
     }
 
     public double readAverageScore() {
-        return readBoundedDouble(" Average score (0.0 - 5.0): ", 0, 5.0);
+        double raw = readBoundedDouble(" Average score (0.0 - 5.0): ", 0, 5.0);
+        return Math.round(raw * 100.0) / 100.0;
     }
 
     public int readRecordBookNumber() {

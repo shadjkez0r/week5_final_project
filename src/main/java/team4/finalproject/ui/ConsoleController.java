@@ -4,6 +4,7 @@ import team4.finalproject.collection.CustomList;
 import team4.finalproject.domain.Student;
 import team4.finalproject.io.FileHandler;
 import team4.finalproject.io.StudentStreamGenerator;
+import team4.finalproject.service.OccurrenceCounter;
 import team4.finalproject.service.SortingService;
 import team4.finalproject.service.StudentComparators;
 import team4.finalproject.service.strategy.BubbleSortStrategy;
@@ -20,6 +21,7 @@ public class ConsoleController {
     private final MenuPrinter menuPrinter;
     private final StudentStreamGenerator streamGenerator;
     private final SortingService sortingService;
+    private final OccurrenceCounter occurrenceCounter;
     private CustomList<Student> currentCollection;
 
     public ConsoleController() {
@@ -27,6 +29,7 @@ public class ConsoleController {
         this.sortingService = new SortingService(new BubbleSortStrategy<>());
         this.inputReader = new InputReader();
         this.menuPrinter = new MenuPrinter();
+        this.occurrenceCounter = new OccurrenceCounter();
         this.currentCollection = new CustomList<>();
     }
 
@@ -57,6 +60,9 @@ public class ConsoleController {
                     specialSort();
                     break;
                 case 5:
+                    countOccurrences();
+                    break;
+                case 6:
                     writeToFile();
                     break;
                 default:
@@ -65,6 +71,39 @@ public class ConsoleController {
             }
         }
         inputReader.close();
+    }
+
+    private void countOccurrences() {
+        if (currentCollection.isEmpty()) {
+            System.out.println("Collection is empty. Use option 1 to fill it first.");
+            return;
+        }
+
+        System.out.println("--- Count Occurrences (parallel stream) ---");
+        System.out.println("Search by field:");
+        System.out.println("  1. Group Number");
+        System.out.println("  2. Average Score");
+        System.out.println("  3. Record Book Number");
+
+        int fieldChoice = inputReader.readInt("Enter your choice: ");
+
+        switch (fieldChoice) {
+            case 1:
+                int groupNumber = inputReader.readGroupNumber();
+                occurrenceCounter.count(currentCollection, s -> s.getGroupNumber() == groupNumber);
+                break;
+            case 2:
+                double score = inputReader.readAverageScore();
+                occurrenceCounter.count(currentCollection,
+                        s -> Math.abs(s.getAverageScore() - score) < 0.001);
+                break;
+            case 3:
+                int recordBookNumber = inputReader.readRecordBookNumber();
+                occurrenceCounter.count(currentCollection, s -> s.getRecordBookNumber() == recordBookNumber);
+                break;
+            default:
+                System.out.println("Invalid field choice.");
+        }
     }
 
     private void sortCollection() {
@@ -168,7 +207,7 @@ public class ConsoleController {
         System.out.println("--------------------------------------------------");
         for (int i = 0; i < currentCollection.size(); i++) {
             Student s = currentCollection.get(i);
-            System.out.printf("%-4d %-12d %-14.1f %-18d%n",
+            System.out.printf("%-4d %-12d %-14.2f %-18d%n",
                     i + 1, s.getGroupNumber(), s.getAverageScore(), s.getRecordBookNumber());
         }
         System.out.println("--------------------------------------------------");
@@ -261,15 +300,14 @@ public class ConsoleController {
 
         int algoChoice = inputReader.readInt("Enter your choice: ");
 
-        switch (algoChoice) {
-            case 1:
-                return new BubbleSortStrategy<>();
-            case 2:
-                return new InsertionSortStrategy<>();
-            default:
+        return switch (algoChoice) {
+            case 1 -> new BubbleSortStrategy<>();
+            case 2 -> new InsertionSortStrategy<>();
+            default -> {
                 System.out.println("Invalid algorithm choice.");
-                return null;
-        }
+                yield null;
+            }
+        };
     }
 
 }

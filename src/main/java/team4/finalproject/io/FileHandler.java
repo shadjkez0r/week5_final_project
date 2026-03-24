@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 
 public class FileHandler {
     private static final DateTimeFormatter TIMESTAMP_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
+    private static final int NUMBER_OF_LINES_WITH_COMMENTS_DURING_WRITE_FILE = 3;
 
     public List<Student> readFromFile(String inputPath) {
         List<Student> students = new ArrayList<>();
@@ -77,7 +77,9 @@ public class FileHandler {
 
         try {
             Files.write(path, finalLines, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
-            System.out.println("Successfully wrote student data: " + (finalLines.size()-3));
+            System.out.println(
+                    "Successfully wrote student data: "
+                            + (finalLines.size() - NUMBER_OF_LINES_WITH_COMMENTS_DURING_WRITE_FILE));
         } catch (IOException e) {
             System.out.println("Error writing file: " + e.getMessage());
         }
