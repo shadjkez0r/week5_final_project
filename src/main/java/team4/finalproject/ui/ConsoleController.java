@@ -1,5 +1,6 @@
 package team4.finalproject.ui;
 
+import team4.finalproject.collection.CustomList;
 import team4.finalproject.domain.Student;
 import team4.finalproject.io.FileHandler;
 import team4.finalproject.io.StudentStreamGenerator;
@@ -10,7 +11,6 @@ import team4.finalproject.service.strategy.EvenOnlySortStrategy;
 import team4.finalproject.service.strategy.InsertionSortStrategy;
 import team4.finalproject.service.strategy.SortingStrategy;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.ToIntFunction;
@@ -20,14 +20,14 @@ public class ConsoleController {
     private final MenuPrinter menuPrinter;
     private final StudentStreamGenerator streamGenerator;
     private final SortingService sortingService;
-    private List<Student> currentCollection;
+    private CustomList<Student> currentCollection;
 
     public ConsoleController() {
         this.streamGenerator = new StudentStreamGenerator();
         this.sortingService = new SortingService(new BubbleSortStrategy<>());
         this.inputReader = new InputReader();
         this.menuPrinter = new MenuPrinter();
-        this.currentCollection = new ArrayList<>();
+        this.currentCollection = new CustomList<>();
     }
 
     public void run() {
@@ -95,7 +95,7 @@ public class ConsoleController {
         sortingService.setStrategy(baseStrategy);
 
         long start = System.currentTimeMillis();
-        sortingService.sort(currentCollection, comparator);
+        sortingService.sort(currentCollection.asList(), comparator);
         long elapsed = System.currentTimeMillis() - start;
 
         System.out.println("Sorting complete in " + elapsed + " ms.");
@@ -141,7 +141,7 @@ public class ConsoleController {
         sortingService.setStrategy(strategy);
 
         long start = System.currentTimeMillis();
-        sortingService.sort(currentCollection, comparator);
+        sortingService.sort(currentCollection.asList(), comparator);
         long elapsed = System.currentTimeMillis() - start;
 
         System.out.println("Special sorting complete in " + elapsed + " ms.");
@@ -199,7 +199,7 @@ public class ConsoleController {
     private void fillManual() {
         int size = inputReader.readBoundedInt(
                 "How many students do you want to enter (1-100)? ", 1, 100);
-        List<Student> list = new ArrayList<>();
+        CustomList<Student> list = new CustomList<>();
 
         for (int i = 0; i < size; i++) {
             System.out.println("\nStudent " + (i + 1) + " of " + size + ":");
@@ -212,6 +212,7 @@ public class ConsoleController {
                     .groupNumber(groupNumber)
                     .averageScore(averageScore)
                     .build();
+
             list.add(student);
         }
 
@@ -221,7 +222,8 @@ public class ConsoleController {
 
     private void fillRandom() {
         int size = inputReader.readBoundedInt("Enter number of students to generate (1-1000): ", 1, 1000);
-        currentCollection = new ArrayList<>(streamGenerator.generateRandom(size));
+        currentCollection = new CustomList<>(size);
+        streamGenerator.generateRandom(size).forEach(currentCollection::add);
         System.out.println("Done! Generated " + currentCollection.size() + " students.");
     }
 
@@ -237,7 +239,7 @@ public class ConsoleController {
         );
 
         FileHandler fileHandler = new FileHandler();
-        fileHandler.writeToFile(currentCollection, path);
+        fileHandler.writeToFile(currentCollection.asList(), path);
     }
 
     private void fillFromFile() {
@@ -247,7 +249,9 @@ public class ConsoleController {
         );
 
         FileHandler fileHandler = new FileHandler();
-        currentCollection = new ArrayList<>(fileHandler.readFromFile(path));
+        List<Student> fromFile = fileHandler.readFromFile(path);
+        currentCollection = new CustomList<>();
+        fromFile.forEach(currentCollection::add);
     }
 
     private SortingStrategy<Student> chooseAlgorithm() {

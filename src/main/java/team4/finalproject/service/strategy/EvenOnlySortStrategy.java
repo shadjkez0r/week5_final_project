@@ -18,20 +18,20 @@ public class EvenOnlySortStrategy implements SortingStrategy<Student> {
 
     @Override
     public void sort(List<Student> list, Comparator<Student> comparator) {
-        List<Integer> evenIndicies = new ArrayList<>();
+        List<Integer> evenIndices = new ArrayList<>();
         List<Student> evenElements = new ArrayList<>();
 
         for (int i = 0; i < list.size(); i++) {
             if (fieldForNaturalOrder.applyAsInt(list.get(i)) % 2 == 0) {
-                evenIndicies.add(i);
+                evenIndices.add(i);
                 evenElements.add(list.get(i));
             }
         }
 
         delegate.sort(evenElements, comparator);
 
-        for (int i = 0; i < evenIndicies.size(); i++) {
-            list.set(evenIndicies.get(i), evenElements.get(i));
+        for (int i = 0; i < evenIndices.size(); i++) {
+            list.set(evenIndices.get(i), evenElements.get(i));
         }
 
     }
