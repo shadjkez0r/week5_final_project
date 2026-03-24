@@ -1,7 +1,8 @@
-package team4.finalproject.domain;
+package team4.finalproject.collection;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import team4.finalproject.domain.Student;
 
 import java.util.List;
 

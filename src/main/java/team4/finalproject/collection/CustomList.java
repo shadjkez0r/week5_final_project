@@ -1,4 +1,4 @@
-package team4.finalproject.domain;
+package team4.finalproject.collection;
 
 import java.util.*;
 import java.util.function.Consumer;
