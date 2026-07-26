@@ -5,7 +5,7 @@
 ![Architecture](https://img.shields.io/badge/Architecture-Clean%20OOP%20%2F%20GoF-4EAA25?style=for-the-badge)
 ![Concurrency](https://img.shields.io/badge/Concurrency-Multithreading-blue?style=for-the-badge)
 
-Командный финальный проект (Team 4), разработанный в рамках стажировки. Представляет собой консольное Java-приложение с чистой архитектурой для управления коллекциями студентов, реализации кастомных структур данных, гибкой сортировки и многопоточной обработки информации.
+Командный финальный проект команды Team 4. Представляет собой консольное Java-приложение с чистой архитектурой для управления коллекциями студентов, реализации кастомных структур данных, гибкой сортировки и многопоточной обработки информации.
 
 ---
 
@@ -48,3 +48,71 @@ src/main/java/team4/finalproject/
 │   ├── SortingService   # Сервис управления сортировками
 │   └── OccurrenceCounter# Многопоточный счетчик вхождений
 └── ui/                  # Клиентский уровень CLI (ConsoleController, MenuPrinter, InputReader)
+```
+
+---
+
+## 🛠️ Примененные паттерны проектирования (GoF)
+
+1. **Builder Pattern (`Student.builder()`)** — обеспечение иммутабельности доменной модели и безопасная валидация полей при создании объекта.
+2. **Strategy Pattern (`SortingStrategy<T>`)** — инкапсуляция алгоритмов сортировки и возможность их взаимозаменяемости без изменения клиентского кода.
+3. **Adapter Pattern (`CustomList.ListAdapter`)** — адаптация собственной структуры данных под стандартный интерфейс `java.util.List`.
+4. **Dependency Injection (Через конструкторы)** — слабосвязанная архитектура сервисов и контроллеров.
+
+---
+
+## 👥 Роль в проекте
+
+**Team Lead & Core Developer (`shadjkez0r`):**
+- Организация командной разработки, построение архитектуры проекта и код-ревью.
+- Управление репозиторием и Git-процессами.
+- Реализация ядра коллекции `CustomList`, паттернов сортировки и многопоточной обработки данных.
+
+---
+
+## 💻 Интерактивное меню CLI
+
+```text
+========================================
+       STUDENT SORTING APPLICATION      
+              Team 4 Project            
+========================================
+
+-------- MAIN MENU --------
+1. Fill collection
+2. Show current collection
+3. Sort collection
+4. Special sort  [Доп.1: even values sorted, odd stay in place]
+5. Count occurrences  [Доп.4: multithreading]
+6. Write collection to file  [Доп.2: append mode]
+0. Exit
+---------------------------
+```
+
+---
+
+## 🚀 Требования и инструкция по запуску
+
+### 📋 Требования (Requirements)
+- **Java Development Kit (JDK):** версия 17 или выше (рекомендуется Java 17 / 21)
+- **Сборщик проектов:** Apache Maven 3.8+
+- **Операционная система:** Windows / Linux / macOS
+
+### 🛠️ Инструкция по сборке и запуску (How to Run)
+
+1. **Клонирование репозитория:**
+   ```bash
+   git clone https://github.com/shadjkez0r/week5_final_project.git
+   cd week5_final_project
+   ```
+
+2. **Сборка проекта через Maven:**
+   ```bash
+   mvn clean package
+   ```
+   *После успешной сборки в директории `target/` будет создан исполняемый файл `finalproject-1.0-SNAPSHOT.jar`.*
+
+3. **Запуск приложения в консоли:**
+   ```bash
+   java -cp target/finalproject-1.0-SNAPSHOT.jar team4.finalproject.Main
+   ```
