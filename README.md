@@ -1,6 +1,6 @@
 # 🎓 Student Sorting & Management Application
 
-![Java](https://img.shields.io/badge/Java-17%2B-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+![Java](https://img.shields.io/badge/Java-25%2B-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
 ![Maven](https://img.shields.io/badge/Maven-3.8%2B-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white)
 ![Architecture](https://img.shields.io/badge/Architecture-Clean%20OOP%20%2F%20GoF-4EAA25?style=for-the-badge)
 ![Concurrency](https://img.shields.io/badge/Concurrency-Multithreading-blue?style=for-the-badge)
@@ -86,7 +86,7 @@ src/main/java/team4/finalproject/
 ## 🚀 Требования и инструкция по запуску
 
 ### 📋 Требования (Requirements)
-- **Java Development Kit (JDK):** версия 17 или выше 
+- **Java Development Kit (JDK):** 25 версия 
 - **Сборщик проектов:** Apache Maven 3.8+
 - **Операционная система:** Windows / Linux / macOS
 
